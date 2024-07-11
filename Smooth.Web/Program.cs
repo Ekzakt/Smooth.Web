@@ -6,16 +6,36 @@ namespace Smooth.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("Cookies")
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = builder.Configuration.GetValue<string>("IdentityServer:Authority");
+                options.ClientId = builder.Configuration.GetValue<string>("IdentityServer:ClientId");
+                options.ClientSecret = builder.Configuration.GetValue<string>("IdentityServer:ClientSecret");
+                options.ResponseType = "code";
+                
+                options.Scope.Clear();
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("flauntapi.read");
+                
+                options.MapInboundClaims = false; // Don't rename claim types
+
+                options.SaveTokens = true;
+            });
+
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
