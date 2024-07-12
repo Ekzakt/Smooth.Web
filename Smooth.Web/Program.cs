@@ -20,8 +20,10 @@ namespace Smooth.Web
                 options.Authority = builder.Configuration.GetValue<string>("IdentityServer:Authority");
                 options.ClientId = builder.Configuration.GetValue<string>("IdentityServer:ClientId");
                 options.ClientSecret = builder.Configuration.GetValue<string>("IdentityServer:ClientSecret");
+
                 options.ResponseType = "code";
-                
+                options.ResponseMode = "query";
+
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
