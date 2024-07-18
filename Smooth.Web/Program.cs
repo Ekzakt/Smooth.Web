@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 namespace Smooth.Web
 {
     public class Program
@@ -6,24 +9,43 @@ namespace Smooth.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+            });
+
             builder.Services.AddAuthentication(options =>
             {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie("Cookies")
-            .AddOpenIdConnect("oidc", options =>
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.Cookie.Name = ".AspNet.SharedCookie";
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.Cookie.Domain = "localhost";
+                }
+            })
+            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 options.Authority = builder.Configuration.GetValue<string>("IdentityServer:Authority");
                 options.ClientId = builder.Configuration.GetValue<string>("IdentityServer:ClientId");
                 options.ClientSecret = builder.Configuration.GetValue<string>("IdentityServer:ClientSecret");
+
                 options.ResponseType = "code";
-                
+                options.ResponseMode = "query";
+
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
+                options.Scope.Add("offline_access");
                 options.Scope.Add("flauntapi.read");
-                
+                options.GetClaimsFromUserInfoEndpoint = true;
+
                 options.MapInboundClaims = false; // Don't rename claim types
 
                 options.SaveTokens = true;
@@ -44,6 +66,7 @@ namespace Smooth.Web
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.MapRazorPages();
