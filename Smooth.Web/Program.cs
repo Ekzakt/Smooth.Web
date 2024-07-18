@@ -21,9 +21,9 @@ namespace Smooth.Web
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
+                //options.Cookie.SameSite = SameSiteMode.None;
+                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.Name = ".AspNet.SharedCookie";
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
                 if (builder.Environment.IsDevelopment())
                 {
