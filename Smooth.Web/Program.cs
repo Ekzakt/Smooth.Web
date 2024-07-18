@@ -61,6 +61,12 @@ namespace Smooth.Web
                 app.UseHsts();
             }
 
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                Secure = CookieSecurePolicy.Always,
+                MinimumSameSitePolicy = SameSiteMode.None
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
