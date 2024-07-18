@@ -21,8 +21,6 @@ namespace Smooth.Web
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                //options.Cookie.SameSite = SameSiteMode.None;
-                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.Name = ".AspNet.SharedCookie";
 
                 if (builder.Environment.IsDevelopment())
@@ -60,12 +58,6 @@ namespace Smooth.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            //app.UseCookiePolicy(new CookiePolicyOptions
-            //{
-            //    Secure = CookieSecurePolicy.Always,
-            //    MinimumSameSitePolicy = SameSiteMode.None
-            //});
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
