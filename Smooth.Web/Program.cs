@@ -23,10 +23,10 @@ namespace Smooth.Web
             {
                 options.Cookie.Name = ".AspNet.SharedCookie";
 
-                if (builder.Environment.IsDevelopment())
-                {
-                    options.Cookie.Domain = "localhost";
-                }
+                //if (builder.Environment.IsDevelopment())
+                //{
+                //    options.Cookie.Domain = "localhost";
+                //}
             })
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
