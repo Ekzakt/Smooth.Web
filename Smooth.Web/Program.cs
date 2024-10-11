@@ -1,75 +1,94 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
+using Smooth.Web.Data;
 
-namespace Smooth.Web
+namespace Smooth.Web;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+        var environment = builder.Environment;
+
+        IdentityModelEventSource.ShowPII = environment.IsDevelopment();
+
+        builder.Services.Configure<RouteOptions>(routeOptions =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            routeOptions.LowercaseUrls = true;
+        });
 
-            builder.Services.Configure<RouteOptions>(options =>
-            {
-                options.LowercaseUrls = true;
-            });
+        builder.Services.AddRazorPages();
 
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-            {
-                options.Cookie.Name = ".AspNet.SharedCookie";
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
-                //if (builder.Environment.IsDevelopment())
-                //{
-                //    options.Cookie.Domain = "localhost";
-                //}
-            })
-            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = builder.Configuration.GetValue<string>("IdentityServer:Authority");
-                options.ClientId = builder.Configuration.GetValue<string>("IdentityServer:ClientId");
-                options.ClientSecret = builder.Configuration.GetValue<string>("IdentityServer:ClientSecret");
+        builder.Services.AddDataProtection()
+                .PersistKeysToDbContext<ApplicationDbContext>()
+                .SetApplicationName("SmoothSensation.SharedCookie");
 
-                options.ResponseType = "code";
-                options.ResponseMode = "query";
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        })
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.Cookie.Name = ".AspNet.SharedCookie";
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.Domain = builder.Configuration["IdentityServer:CookieDomain"];
+            options.Cookie.HttpOnly = true;
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+            options.SlidingExpiration = true;
+        })
+        .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+        {
+            options.Authority = builder.Configuration["IdentityServer:Authority"];
+            options.ClientId = builder.Configuration["IdentityServer:ClientId"];
+            options.ClientSecret = builder.Configuration["IdentityServer:ClientSecret"];
+            options.RequireHttpsMetadata = !environment.IsDevelopment();
+            options.SaveTokens = true;
+            options.ResponseType = "code";
+            options.ResponseMode = "query";
+            options.GetClaimsFromUserInfoEndpoint = true;
+            options.UsePkce = true;
+            options.MapInboundClaims = false;
 
-                options.Scope.Clear();
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("offline_access");
-                options.Scope.Add("flauntapi.read");
-                options.GetClaimsFromUserInfoEndpoint = true;
+            options.Scope.Clear();
+            options.Scope.Add("openid");
+            options.Scope.Add("profile");
+            options.Scope.Add("offline_access");
+            options.Scope.Add("flauntapi.read");
+        });
 
-                options.MapInboundClaims = false; // Don't rename claim types
+        var app = builder.Build();
 
-                options.SaveTokens = true;
-            });
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
 
-            builder.Services.AddRazorPages();
-
-            var app = builder.Build();
-
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-            app.UseAuthorization();
-
-            app.MapRazorPages();
-
-            app.Run();
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
         }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+        app.UseAuthorization();
+
+        app.MapRazorPages();
+
+        app.Run();
     }
 }
