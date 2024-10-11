@@ -6,7 +6,7 @@ namespace Smooth.Web.TagHelpers;
 [HtmlTargetElement("version")]
 public class VersionTagHelper : TagHelper
 {
-    public string? Prefix { get; set; } = null;
+    public string? VersionPrefix { get; set; } = null;
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -17,9 +17,9 @@ public class VersionTagHelper : TagHelper
             version = new Version(version).ToString(3);
         }
 
-        if (!string.IsNullOrEmpty(Prefix))
+        if (!string.IsNullOrEmpty(VersionPrefix))
         {
-            version = $"{Prefix}{version}".Trim();
+            version = $"{VersionPrefix}{version}".Trim();
         }
 
         output.TagName = "span";
