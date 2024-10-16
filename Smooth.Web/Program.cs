@@ -14,12 +14,26 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var environment = builder.Environment;
-
+        
         IdentityModelEventSource.ShowPII = environment.IsDevelopment();
+
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
 
         builder.Services.Configure<RouteOptions>(routeOptions =>
         {
             routeOptions.LowercaseUrls = true;
+        });
+
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
         });
 
         builder.Services.AddRazorPages();
@@ -43,6 +57,7 @@ public class Program
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.Domain = builder.Configuration["IdentityServer:CookieDomain"];
             options.Cookie.HttpOnly = true;
+            options.Cookie.Path = "/";
             options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
             options.SlidingExpiration = true;
         })
@@ -68,10 +83,8 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseForwardedHeaders(new ForwardedHeadersOptions
-        {
-            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-        });
+        app.UseForwardedHeaders();
+        app.UseHttpsRedirection();
 
         if (!app.Environment.IsDevelopment())
         {
