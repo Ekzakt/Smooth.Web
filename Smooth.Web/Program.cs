@@ -29,13 +29,6 @@ public class Program
             routeOptions.LowercaseUrls = true;
         });
 
-        builder.Services.Configure<ForwardedHeadersOptions>(options =>
-        {
-            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            options.KnownNetworks.Clear();
-            options.KnownProxies.Clear();
-        });
-
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -84,7 +77,6 @@ public class Program
         var app = builder.Build();
 
         app.UseForwardedHeaders();
-        app.UseHttpsRedirection();
 
         if (!app.Environment.IsDevelopment())
         {
