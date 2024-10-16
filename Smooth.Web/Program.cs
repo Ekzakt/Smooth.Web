@@ -112,7 +112,10 @@ public class Program
         }
 
         // 10. Use HTTPS Redirection Middleware
-        app.UseHttpsRedirection();
+        if (app.Environment.IsDevelopment())
+        { 
+            app.UseHttpsRedirection();        
+        }
 
         // 11. Use Static Files
         app.UseStaticFiles();
