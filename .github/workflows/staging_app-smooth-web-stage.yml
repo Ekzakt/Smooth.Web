@@ -29,10 +29,10 @@ jobs:
       #   run: dotnet build --configuration Release
 
       - name: Restore dependencies
-        run: dotnet restore ${{ github.workspace }}/Smooth.Web.csproj
+        run: dotnet restore ${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj
 
       - name: Build the solution
-        run: dotnet build ${{ github.workspace }}/Smooth.Web.csproj --configuration Release
+        run: dotnet build ${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
