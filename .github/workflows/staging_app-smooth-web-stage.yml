@@ -13,38 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check working directory
-        run: pwd
-
-      - name: List files in workspace
-        run: ls -R ${{ github.workspace }}
-  
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
           include-prerelease: true
-  
-      # - name: Build with dotnet
-      #   run: dotnet build --configuration Release
 
-      # - name: Restore dependencies
-      #   run: dotnet restore ${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj
-
-      # - name: Build the solution
-      #   run: dotnet build ${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj --configuration Release
-
-      # - name: dotnet publish
-      #   run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Restore dependencies for solution
-        run: dotnet restore ${{ github.workspace }}/Smooth.Web.csproj
-
-      - name: Build the solution
-        run: dotnet build ${{ github.workspace }}/Smooth.Web.csproj --configuration Release
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ${{ github.workspace }}/Smooth.Web.csproj --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
