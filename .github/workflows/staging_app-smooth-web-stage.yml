@@ -28,20 +28,20 @@ jobs:
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      # - name: Build with dotnet
+      #   run: dotnet build --configuration Release
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      # - name: dotnet publish
+      #   run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      # - name: Restore dependencies
-      #   run: dotnet restore Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
+      - name: Restore dependencies
+        run: dotnet restore Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
 
-      # - name: Build the solution
-      #   run: dotnet build Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
+      - name: Build the solution
+        run: dotnet build Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
 
-      # - name: Publish the app
-      #   run: dotnet publish Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish the app
+        run: dotnet publish Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
