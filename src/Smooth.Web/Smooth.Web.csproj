@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -15,7 +15,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Smooth.Shared\src\Smooth.Shared\Smooth.Shared.csproj" />
+      <Reference Include="Smooth.Shared">
+        <HintPath>..\..\..\Smooth.Shared\src\Smooth.Shared\bin\Debug\net8.0\Smooth.Shared.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
