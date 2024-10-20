@@ -19,6 +19,12 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - name: Check working directory
+        run: pwd
+
+      - name: List files in workspace
+        run: ls -R ${{ github.workspace }}
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
