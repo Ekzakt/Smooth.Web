@@ -29,7 +29,7 @@ jobs:
       #   run: dotnet build --configuration Release
 
       - name: Restore dependencies
-        run: dotnet restore Smooth.Web/Smooth.Web/Smooth.Web.csproj
+        run: dotnet restore ${{ github.workspace }}/Smooth.Web.csproj
 
       - name: Build the solution
         run: dotnet build ${{ github.workspace }}/Smooth.Web.csproj --configuration Release
