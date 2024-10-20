@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository (including submodules)
+        uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -30,6 +33,15 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      # - name: Restore dependencies
+      #   run: dotnet restore Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
+
+      # - name: Build the solution
+      #   run: dotnet build Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
+
+      # - name: Publish the app
+      #   run: dotnet publish Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
