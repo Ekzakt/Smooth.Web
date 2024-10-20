@@ -25,8 +25,14 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
   
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      # - name: Build with dotnet
+      #   run: dotnet build --configuration Release
+
+      - name: Restore dependencies
+        run: dotnet restore Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
+
+      - name: Build the solution
+        run: dotnet build Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
