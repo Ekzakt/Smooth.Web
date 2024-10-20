@@ -15,9 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Smooth.Shared">
-        <HintPath>..\..\..\Smooth.Shared\src\Smooth.Shared\bin\Debug\net8.0\Smooth.Shared.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\..\..\Smooth.Shared\src\Smooth.Shared\Smooth.Shared.csproj" />
     </ItemGroup>
-
+    
 </Project>
