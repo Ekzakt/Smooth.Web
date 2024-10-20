@@ -14,10 +14,4 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="Smooth.Shared">
-        <HintPath>..\..\..\Smooth.Shared\src\Smooth.Shared\bin\Debug\net8.0\Smooth.Shared.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>
