@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository (including submodules)
         uses: actions/checkout@v2
         with:
-          submodules: true
+          submodules: recursive  # Ensures all submodules are fetched
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -22,34 +22,22 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      - name: Check working directory
-        run: pwd
-
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
 
-      # - name: Build with dotnet
-      #   run: dotnet build --configuration Release
+      - name: Build with dotnet
+        working-directory: ./Smooth.Sensation/src/Smooth.Web
+        run: dotnet build --configuration Release
 
-      # - name: dotnet publish
-      #   run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Restore dependencies
-        # run: dotnet restore Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
-        run: dotnet restore /home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj
-
-      - name: Build the solution
-        # run: dotnet build Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
-        run: dotnet build /home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release
-
-      - name: Publish the app
-        run: dotnet publish /home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish with dotnet
+        working-directory: ./Smooth.Sensation/src/Smooth.Web
+        run: dotnet publish -c Release -o ${{ github.workspace }}/publish_output
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{ github.workspace }}/publish_output
 
   deploy:
     runs-on: ubuntu-latest
