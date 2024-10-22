@@ -14,8 +14,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     </ItemGroup>
 
-    <ItemGroup Condition="">
-        <ProjectReference Include="src/Smooth.Shared/src/Smooth.Shared/Smooth.Shared.csproj" />
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Smooth.Shared\src\Smooth.Shared\Smooth.Shared.csproj" />
     </ItemGroup>
 
 </Project>
