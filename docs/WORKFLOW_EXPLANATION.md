@@ -1,3 +1,4 @@
+``` yaml 
 name: Build and deploy ASP.Net Core app to Azure Web App - app-smooth-web-stage
 
 on:
@@ -74,6 +75,7 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B4965181552C4F59BCE5376DAEF51BC0 }}
           package: .
+```
 
 # Explanation of the Workflow File
 
