@@ -11,10 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository (including submodules)
+      - name: Checkout repository (without submodules)
         uses: actions/checkout@v2
         with:
-          submodules: recursive  # Ensures all submodules are fetched
+          submodules: false  # We'll manually handle submodule placement later
+
+      - name: Clone Smooth.Shared submodule in the correct location
+        run: |
+          git clone https://github.com/Ekzakt/Smooth.Shared ../Smooth.Shared
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
