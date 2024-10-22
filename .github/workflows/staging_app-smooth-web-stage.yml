@@ -22,15 +22,20 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - name: Print working directory
+        run: pwd
+
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
 
+      # Build the Smooth.Web project
       - name: Build with dotnet
-        working-directory: ./Smooth.Sensation/src/Smooth.Web
+        working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet build --configuration Release
 
+      # Publish the Smooth.Web project
       - name: Publish with dotnet
-        working-directory: ./Smooth.Sensation/src/Smooth.Web
+        working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish_output
 
       - name: Upload artifact for deployment job
