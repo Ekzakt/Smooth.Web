@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository (including submodules)
         uses: actions/checkout@v2
         with:
-          submodules: recursive  # Ensures all submodules are fetched
+          submodules: recursive  # This ensures all submodules are fetched
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -27,6 +27,11 @@ jobs:
 
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
+
+      # Restore dependencies, including for submodules
+      - name: Restore dependencies
+        working-directory: ${{ github.workspace }}/src/Smooth.Web
+        run: dotnet restore
 
       # Build the Smooth.Web project
       - name: Build with dotnet
