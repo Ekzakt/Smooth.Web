@@ -31,7 +31,7 @@ jobs:
         run: dotnet restore
 
       - name: Remove robots.txt on master branch
-        if: github.ref == 'refs/heads/staging'
+        if: github.ref == 'refs/heads/master'
         run: rm -f /home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/wwwroot/robots.txt
         
       - name: Update Build Number
