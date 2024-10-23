@@ -35,8 +35,9 @@ jobs:
           offset=52
           runNumber=${{ github.run_number }}
           versionNumber=$((runNumber - offset))
+          echo "The offset number is $offset."
+          echo "The run number is $runNumber."
           echo "The version number is $versionNumber."
-          echo "The run number is ${{ github.run_number }}."
           projects=(
             "/home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj"
           )
