@@ -32,7 +32,7 @@ jobs:
 
       - name: Update Build Number and Pack Projects
         run: |
-          $offset = 48 - 1
+          $offset = 48
           $runNumber = ${{ github.run_number }}
           $versionNumber = $runNumber - $offset
           $projects = @(
