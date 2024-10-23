@@ -34,9 +34,7 @@ jobs:
         run: |
           $offset = 48 - 1
           $runNumber = ${{ github.run_number }}
-          Write-Host "GitHub run_number: $runNumber"
           $versionNumber = $runNumber - $offset
-          Write-Host "Calculated Version Number: $versionNumber"
           $projects = @(
             "${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj"
           )
