@@ -30,6 +30,10 @@ jobs:
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet restore
 
+      - name: Remove robots.txt on master branch
+        if: github.ref == 'refs/heads/staging'
+        run: rm -f /home/runner/work/Smooth.Web/Smooth.Web/Smooth.Web/wwwroot/robots.txt
+        
       - name: Update Build Number
         run: |
           offset=52
@@ -53,7 +57,7 @@ jobs:
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish_output
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
