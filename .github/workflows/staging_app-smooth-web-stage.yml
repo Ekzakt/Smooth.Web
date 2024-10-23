@@ -35,11 +35,10 @@ jobs:
           offset=52
           runNumber=${{ github.run_number }}
           versionNumber=$((runNumber - offset))
-          echo "The version number is $versionNumber.
+          echo "The version number is $versionNumber."
           projects=(
             "/home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj"
           )
-          echo "Version Number: $versionNumber"
           for project in "${projects[@]}"; do
             sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1$versionNumber/" "$project"
           done
