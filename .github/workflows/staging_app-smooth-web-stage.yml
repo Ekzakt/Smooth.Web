@@ -24,18 +24,19 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
-          include-prerelease: true
+          include-prerelease: false
 
       - name: Restore dependencies, including for submodule
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet restore
 
-      - name: Update Build Number and Pack Projects
+      - name: Update Build Number
         run: |
           offset=52
           runNumber=${{ github.run_number }}
           versionNumber=$((runNumber - offset))
           echo "The version number is $versionNumber."
+          echo "The run number is ${{ github.run_number }}."
           projects=(
             "/home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj"
           )
@@ -46,9 +47,6 @@ jobs:
       - name: Build Smooth.Web project
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet build --configuration Release
-
-      - name: Log the run number
-        run: echo "This is run number ${{ github.run_number }} of this workflow"
 
       - name: Publish Smooth.Web project
         working-directory: ${{ github.workspace }}/src/Smooth.Web
