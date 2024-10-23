@@ -32,8 +32,8 @@ jobs:
 
       - name: Update Build Number and Pack Projects
         run: |
-          offset=48
-          runNumber=51
+          offset=52
+          runNumber=${{ github.run_number }}
           versionNumber=$((runNumber - offset))
           projects=(
             "/home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj"
