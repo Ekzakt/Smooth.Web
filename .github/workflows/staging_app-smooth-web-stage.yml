@@ -26,24 +26,33 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      - name: Print working directory
-        run: pwd
-
-      - name: List files in workspace
-        run: ls -R ${{ github.workspace }}
-
-      # Restore dependencies, including for submodules
-      - name: Restore dependencies
+      - name: Restore dependencies, including for submodule
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet restore
 
-      # Build the Smooth.Web project
-      - name: Build with dotnet
+      - name: Build Smooth.Web project
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet build --configuration Release
 
-      # Publish the Smooth.Web project
-      - name: Publish with dotnet
+      - name: Log the run number
+        run: echo "This is run number ${{ github.run_number }} of this workflow"
+        
+      # - name: Update Build Number and Pack Projects
+        # run: |
+          # $offset = 1
+          # $runNumber = ${{ github.run_number }}
+          # Write-Host "GitHub run_number: $runNumber"
+          # $versionNumber = $runNumber - $offset
+          # Write-Host "Calculated Version Number: $versionNumber"
+          # $projects = @(
+            # "src/Ekzakt.IpGeoLocationService.Core/Ekzakt.IpGeoLocationService.Core.csproj",
+            # "src/Ekzakt.IpGeoLocationService.IpInfo/Ekzakt.IpGeoLocationService.IpInfo.csproj"
+          # )
+          # foreach ($project in $projects) {
+            # sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1$versionNumber/" $project
+          # }
+
+      - name: Publish Smooth.Web project
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet publish -c Release -o ${{ github.workspace }}/publish_output
 
