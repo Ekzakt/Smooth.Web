@@ -32,16 +32,16 @@ jobs:
 
       - name: Update Build Number and Pack Projects
         run: |
-          $offset = 48
-          $runNumber = ${{ github.run_number }}
-          $versionNumber = $runNumber - $offset
-          $projects = @(
-            "${{ github.workspace }}/src/Smooth.Web/Smooth.Web.csproj"
+          offset=48
+          runNumber=51
+          versionNumber=$((runNumber - offset))
+          projects=(
+            "/home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/Smooth.Web.csproj"
           )
-          foreach ($project in $projects) {
-            sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1$versionNumber/" $project
-          }
-          
+          for project in "${projects[@]}"; do
+            sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1$versionNumber/" "$project"
+          done
+
       - name: Build Smooth.Web project
         working-directory: ${{ github.workspace }}/src/Smooth.Web
         run: dotnet build --configuration Release
