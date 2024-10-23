@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8EEB0F98-F3AE-4899-AA6E-8D0962E8D257}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{582B1C69-D3B6-418B-AFAB-92A96D2937CB}"
+	ProjectSection(SolutionItems) = preProject
+		docs\WORKFLOW_EXPLANATION.md = docs\WORKFLOW_EXPLANATION.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smooth.Shared", "..\Smooth.Shared\src\Smooth.Shared\Smooth.Shared.csproj", "{69F8F9C6-4289-4327-8A1A-C3221A7AE1F8}"
 EndProject
