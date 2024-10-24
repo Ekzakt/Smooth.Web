@@ -1,3 +1,6 @@
 [submodule "Smooth.Shared"]
 	path = src/Smooth.Shared
 	url = https://github.com/Ekzakt/Smooth.Shared.git
+[submodule "src/Smooth.Shared.Razor"]
+	path = src/Smooth.Shared.Razor
+	url = https://github.com/Ekzakt/Smooth.Shared.git
