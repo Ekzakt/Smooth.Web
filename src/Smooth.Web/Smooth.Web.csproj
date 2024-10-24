@@ -15,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Smooth.Shared\src\Smooth.Shared.Razor\Smooth.Shared.Razor.csproj" />
       <ProjectReference Include="..\..\..\Smooth.Shared\src\Smooth.Shared\Smooth.Shared.csproj" />
     </ItemGroup>
 
