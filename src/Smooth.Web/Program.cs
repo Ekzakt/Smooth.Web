@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Smooth.Web.Data;
 
 namespace Smooth.Web;
@@ -61,8 +62,8 @@ public class Program
             options.ClientSecret = builder.Configuration["IdentityServer:ClientSecret"];
             options.RequireHttpsMetadata = !environment.IsDevelopment();
             options.SaveTokens = true;
-            options.ResponseType = "code";
-            options.ResponseMode = "query";
+            options.ResponseType = OpenIdConnectResponseType.Code;
+            options.ResponseMode = OpenIdConnectResponseMode.Query;
             options.GetClaimsFromUserInfoEndpoint = true;
             options.UsePkce = true;
             options.MapInboundClaims = false;
